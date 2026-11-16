@@ -1,0 +1,97 @@
+CONFIGURAR SUPABASE PARA SENDA EDUCATIVA
+===========================================
+
+OBJETIVO
+--------
+Usar Supabase únicamente para autenticar el acceso con correo y contraseña.
+No se guardan en Supabase las respuestas de encuestas, los datos de estudiantes
+ni los currículos generados.
+
+A. CREAR EL PROYECTO
+--------------------
+1. Entra en https://supabase.com/ y crea una cuenta o inicia sesión.
+2. Pulsa New project.
+3. Selecciona la organización, escribe un nombre como senda-educativa y define
+   una contraseña segura para la base de datos (guárdala en un gestor seguro).
+4. Selecciona una región cercana a Colombia si está disponible.
+5. Espera a que el proyecto termine de crearse.
+
+B. DESACTIVAR EL REGISTRO PÚBLICO
+---------------------------------
+1. En el panel del proyecto abre Authentication.
+2. Entra en Sign In / Providers (o la sección de configuración de proveedores).
+3. Abre Email.
+4. Desactiva la opción que permite a nuevos usuarios registrarse / sign up
+   (el nombre exacto puede variar según la versión del panel).
+5. Guarda los cambios.
+
+No añadas un botón de registro a la aplicación. El HTML entregado no tiene
+registro público: solo permite iniciar sesión.
+
+C. CREAR LAS CUENTAS COMO ADMINISTRADOR
+---------------------------------------
+1. En Authentication abre Users.
+2. Pulsa Add user.
+3. Selecciona crear usuario (Create new user) o la opción administrativa equivalente.
+4. Escribe el correo institucional y define una contraseña inicial.
+5. Si el panel ofrece la opción de confirmar el correo, sigue la política del
+   colegio. También puedes usar invitación si prefieres que el usuario defina
+   su contraseña mediante el enlace enviado por Supabase.
+6. Entrega las credenciales por un canal seguro. No las pongas en el repositorio,
+   en el código ni en un documento público.
+7. Para retirar el acceso, el administrador puede eliminar o deshabilitar el
+   usuario desde Authentication > Users.
+
+D. COPIAR LOS DATOS PÚBLICOS DEL PROYECTO
+----------------------------------------
+1. En Project Settings abre API (o Data API / API Keys, según la versión).
+2. Copia el Project URL.
+3. Copia la Publishable key (si el panel antiguo muestra anon public, también
+   es la clave pública heredada compatible).
+4. Abre index.html con un editor de texto.
+5. Busca:
+   const SUPABASE_URL = "PEGA_AQUI_TU_SUPABASE_PROJECT_URL";
+   const SUPABASE_PUBLISHABLE_KEY = "PEGA_AQUI_TU_SUPABASE_PUBLISHABLE_KEY";
+6. Reemplaza cada texto entre comillas por el valor correspondiente, sin borrar
+   las comillas ni el punto y coma.
+7. Guarda index.html.
+
+SEGURIDAD: SOLO SE PUEDE INCLUIR LA CLAVE PÚBLICA PUBLISHABLE/ANON EN EL
+FRONTEND. NUNCA PEGUES service_role, secret key, contraseña de base de datos
+ni tokens privados en GitHub.
+
+E. CONFIGURAR LA URL DEL SITIO
+------------------------------
+Después de publicar con GitHub Pages, copia la URL que te entrega GitHub.
+En Supabase, Authentication > URL Configuration:
+- Site URL: pega la URL pública de GitHub Pages.
+- Redirect URLs: añade esa misma URL, si vas a utilizar invitaciones o enlaces
+  de confirmación de correo.
+Guarda los cambios.
+
+F. PUBLICAR EN GITHUB PAGES
+---------------------------
+1. Crea un repositorio público llamado senda-educativa.
+2. Sube index.html, consentimiento_informado.pdf, consentimiento_informado.png,
+   README.txt e INSTRUCCIONES_SUPABASE.txt a la raíz (no dentro de otra carpeta).
+3. En el repositorio entra a Settings > Pages.
+4. En Build and deployment selecciona Deploy from a branch.
+5. En Branch selecciona main y /(root), y pulsa Save.
+6. Espera a que GitHub publique la página. La URL tendrá una forma parecida a:
+   https://TU-USUARIO.github.io/senda-educativa/
+
+G. PRUEBA DE ACCESO
+-------------------
+1. Abre la URL pública en una ventana privada/incógnito.
+2. Debe aparecer la pantalla de inicio de sesión.
+3. Intenta ingresar con un correo que no hayas creado: debe fallar.
+4. Ingresa con una cuenta creada por el administrador: debe abrir SENDA EDUCATIVA.
+5. Cierra sesión y confirma que vuelve a la pantalla de acceso.
+6. Prueba la descarga del consentimiento PDF y PNG desde computador y celular.
+
+NOTAS DE PRIVACIDAD
+-------------------
+Supabase Auth conserva una sesión de autenticación en el almacenamiento local
+del navegador. La app no guarda las respuestas de los cuestionarios en Supabase.
+No obstante, GitHub Pages es público y cualquier visitante puede descargar el
+código y los documentos públicos. No uses datos identificables de estudiantes.
